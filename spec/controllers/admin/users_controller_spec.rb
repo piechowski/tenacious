@@ -1,32 +1,32 @@
 require 'rails_helper'
 
 RSpec.describe Admin::UsersController, type: :controller do
-  describe 'GET #index (not logged in)' do
-    it 'redirects unauthenticated user' do
-      get :index
-      expect(response).to have_http_status(302)
-    end
-  end
-
-  describe 'GET #index (not admin)' do
-    before do
-      login_user
-    end
-
-    it 'redirects non-admin user' do
-      get :index
-      expect(response).to have_http_status(302)
-    end
-  end
-
-  describe 'GET #index (admin)' do
+  context 'when logged in as admin' do
     before do
       login_admin
     end
 
-    it 'allows admin in' do
+    it do
       get :index
       expect(response).to have_http_status(:success)
+    end
+  end
+
+  context 'when logged in as normal user' do
+    before do
+      login_user
+    end
+
+    it do
+      get :index
+      expect(response).to have_http_status(302)
+    end
+  end
+
+  context 'when logged out' do
+    it do
+      get :index
+      expect(response).to have_http_status(302)
     end
   end
 end
