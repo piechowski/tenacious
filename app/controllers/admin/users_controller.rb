@@ -4,7 +4,8 @@ class Admin::UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def index
-    @users = User.all
+    @invited_user = User.pending_invite
+    @active_users = User.active
   end
 
   def show
