@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   validates_presence_of :name
 
-  scope :pending_invite, lambda { where(arel_table[:invitation_token].not_eq(nil)).where(:invitation_accepted_at => nil) }
-  scope :active, lambda { where('invitation_token IS NULL OR invitation_accepted_at IS NOT NULL') }
+  scope :pending_invite, -> { where.not(invitation_token: nil).where(invitation_accepted_at: nil) }
+  scope :active, -> { where('invitation_token IS NULL OR invitation_accepted_at IS NOT NULL') }
 
 end
